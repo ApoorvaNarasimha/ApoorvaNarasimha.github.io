@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apoorva · Portfolio</title>
+<meta name="description" content="Apoorva is a Research Associate at the University of Birmingham who builds and evaluates machine-learning systems for sensor, motion-capture and language data.">
+<meta name="theme-color" content="#070b14">
+<link rel="icon" href="tab-a-bw.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Apoorva · Portfolio">
+<meta property="og:description" content="Machine-learning systems for sensors, motion and language, and the experiments that show whether they hold up.">
+<meta property="og:image" content="img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Apoorva: a voxel character standing on a wave of coloured particles.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Handjet:ELGR,ELSH,wght@1..2,0..16,100..900&family=Syne+Mono&display=swap">
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.classList.add('js')</script><!-- before first paint, so the nav never flashes its no-JS text list -->
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body>
+<a class="skip-link" href="#projects">Skip to my work</a>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="#start" aria-label="Apoorva, back to the start">
+    <span class="brand-name">apoorva</span>
+  </a>
+  <div class="topbar-tools">
+    <button class="chip sound-top" id="sound-toggle" type="button" aria-pressed="true"><span class="word">Sound</span></button>
+    <button class="chip hunt-count" id="hunt-count" type="button" hidden></button>
+    <button class="chip menu-button" id="menu-button" type="button" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
+  </div>
+</header>
+
+<!-- The section nav: pins on the left edge rise to spell where you are (js/pinnav.js). -->
+<nav class="pinnav" id="pinnav" aria-label="Sections">
+  <div class="pinnav-strip" aria-hidden="true"></div>
+  <ol class="pinnav-list">
+    <li><a href="#start" data-map="start"><span class="pinnav-name">Hello</span></a></li>
+    <li><a href="#projects" data-map="projects"><span class="pinnav-name">Projects</span></a></li>
+    <li><a href="#next" data-map="next"><span class="pinnav-name">What's next</span></a></li>
+    <li><a href="#contact" data-map="contact"><span class="pinnav-name">Say hi</span></a></li>
+  </ol>
+</nav>
+
+<!-- The host: a voxel Apoorva who walks the page. Everything she says also lands in the live region. -->
+<div class="host" id="host" hidden>
+  <canvas class="host-canvas" id="host-canvas" aria-hidden="true"></canvas>
+  <button class="host-hit" id="host-hit" type="button" aria-label="Talk to Apoorva, your guide"></button>
+  <div class="bubble" id="bubble" hidden>
+    <img class="bubble-portrait" id="bubble-portrait" alt="" width="40" height="40">
+    <p class="bubble-name label" aria-hidden="true">Apoorva</p>
+    <p class="bubble-text" id="bubble-text"></p>
+    <div class="bubble-options" id="bubble-options"></div>
+    <button class="bubble-close" id="bubble-close" type="button" aria-label="Close speech bubble">×</button>
+  </div>
+</div>
+<div class="mobile-menu" id="mobile-menu" hidden>
+  <nav aria-label="Sections (menu)">
+    <a href="#start">Hello</a><a href="#about">About</a><a href="#projects">Projects</a><a href="#next">What's next</a><a href="#contact">Say hi</a>
+  </nav>
+</div>
+
+<p class="hunt-note" id="hunt-note" role="status"></p>
+
+<main id="main">
+
+  <!-- ============================================================ HELLO -->
+  <section class="field field--blue hero" id="start" aria-labelledby="hero-title" data-section="start">
+    <button class="hunt-pixel hunt-pixel--start" type="button" data-hunt="1" aria-label="A glowing pixel, hidden in this section" hidden></button>
+    <!-- where the voxel guide stands (js/host/stage.js): the empty .host-perch beside the card, or on phones the fourth letter of her name -->
+    <div class="hero-inner">
+      <p class="hero-status">Open to AI/ML roles</p>
+      <h1 class="display-xl hero-name" id="hero-title"><span class="sr-only">Apoorva</span><span class="squish" aria-hidden="true" data-squish data-perch-mobile="start" data-perch-index="3">apoorva</span></h1>
+      <div class="hero-row">
+        <div class="hero-card glass">
+          <p class="lead hero-line">I build and evaluate machine-learning systems for messy, real-world data.</p>
+          <div class="actions">
+            <a class="block block--tangerine" href="#projects" data-jump>see my work</a>
+            <a class="block block--cream" href="#contact" data-jump>get in touch</a>
+          </div>
+        </div>
+        <span class="host-perch host-perch--hero" data-perch="start" aria-hidden="true"></span>
+      </div>
+      <ul class="hero-meta" aria-label="At a glance"><li>Research Associate · University of Birmingham</li><li>MSc HCI · 2024</li><li>1 manuscript in prep</li></ul>
+    </div>
+  </section>
+
+  <!-- ============================================================ ABOUT -->
+  <section class="field about" id="about" aria-labelledby="about-title">
+    <div class="about-grid">
+      <h2 class="display-l" id="about-title"><span>about me</span></h2>
+      <div class="about-text">
+        <p class="about-lead">I'm an AI research engineer who likes turning experimental ideas into <strong>working code, scalable experiments and real-world systems</strong>. My core is <strong>research, programming and problem solving</strong>, and I only use AI to build things that are meaningful.</p>
+        <p>I love hard problems. My brain keeps circling them until they make sense. I strip them down first, build a fast feedback loop I can trust, and only then scale anything up.</p>
+        <p>At the <strong>University of Birmingham</strong> I run studies, review literature and build interactive, AI-enabled devices, which means collecting large datasets for them. At <strong>Risidio</strong> I built parts of the official websites with LLMs and image-generation models, and worked directly with clients. For my MSc dissertation I built soft robotics from scratch, which was the hardest part, and the project won an <strong>award</strong> from the university.</p>
+        <p>Great maths means nothing if it takes weeks to run. That's why I'm moving into <strong>AI systems research</strong>. I want to work on the memory and scheduling bottlenecks behind long-horizon AI agents, so models can reason over massive contexts and constant tool calls without leaving expensive GPUs idle.</p>
+        <p>I treat AI as a high-speed research assistant and a coding multiplier for work I can verify. Anything involving <strong>scientific truth, subtle correctness or high-stakes architecture</strong> stays under my control.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ ALL PROJECTS -->
+  <!-- every project is one card of the same size: none is featured. Cards stack as you scroll (style.css). -->
+  <section class="field field--ink projects" id="projects" aria-labelledby="projects-title" data-section="projects">
+    <button class="hunt-pixel hunt-pixel--projects" type="button" data-hunt="2" aria-label="A glowing pixel, hidden in this section" hidden></button>
+    <div class="section-head">
+      <p class="label kicker">Research, ML &amp; design</p>
+      <h2 class="display-l" id="projects-title"><span data-perch="projects">all projects</span></h2>
+      <p class="title projects-intro">I train models on sensor and motion data, evaluate language models, and run the experiments that show whether any of it holds up.</p>
+    </div>
+    <ol class="stack" role="list">
+      <li class="stack-card card--chords">
+      <article class="stack-inner" aria-labelledby="chords-title">
+        <div class="stack-copy">
+        <p class="work-tag">Now · LIFT graphene sensors</p>
+        <h3 class="stack-title" id="chords-title">Wearable sensing with LIFT</h3>
+        <p class="stack-sub">Printing flexible graphene sensors, testing how reliable they are, and using them for live hand interaction.</p>
+        <ul class="facts" aria-label="Key facts"><li><b>5</b><span>flexible substrates compared</span></li><li><b>6</b><span>properties tested</span></li><li><b>Live</b><span>movement sensing on skin</span></li></ul>
+        <details class="more"><summary>How it was done<span class="sr-only">: Wearable sensing with LIFT</span></summary>
+        <dl class="work-lines">
+          <div><dt>Why it matters</dt><dd>Flexible sensors could put touch and movement sensing into soft things and onto skin, but they drift, age and behave differently on each material.</dd></div>
+          <div><dt>Testing the sensors</dt><dd>Printed graphene sensors with LIFT and compared them on five flexible substrates for resistance stability, deformation response, drift, recovery, ageing and repeatability.</dd></div>
+          <div><dt>Using them live</dt><dd>Built a real-time chord generator from flexible sensors on the skin of the hands, with a microcontroller and Python, checked against OpenCV and MediaPipe.</dd></div>
+          <div><dt>What's next</dt><dd>Collecting sensor data so the project can become AI-enabled, bringing LIFT printing into the xTool P3 laser workflow, and finishing the manuscript.</dd></div>
+          <div><dt>With</dt><dd>Dr Hyunyoung Kim, University of Birmingham.</dd></div>
+        </dl>
+        <ul class="chips" aria-label="Built with"><li>LIFT printing</li><li>Real time</li><li>Microcontroller + Python</li><li>OpenCV · MediaPipe check</li><li>1 manuscript in prep</li></ul>
+        </details>
+        </div>
+        <figure class="stack-media"><video src="img/chords.mp4" poster="img/chords.jpg" width="960" height="954" muted loop playsinline preload="none" role="img" aria-label="A hand with a thin sensor on one finger bends in front of a monitor, where the Tattoo Sensor Music Interface follows the finger and changes the chord."></video></figure>
+      </article>
+      </li>
+      <li class="stack-card card--lunim">
+      <article class="stack-inner" aria-labelledby="lunim-title">
+        <div class="stack-copy">
+        <p class="work-tag">AI platform engineer · Risidio, London · 2025</p>
+        <h3 class="stack-title" id="lunim-title">Lunim Innovation Studio</h3>
+        <p class="stack-sub">Using AI models to move Lunim's platform from idea to design to working code.</p>
+        <ul class="facts" aria-label="Key facts"><li><b>2025</b><span>Risidio, London</span></li><li><b>AI</b><span>supported design and code</span></li><li><b>Users</b><span>interviewed to set priorities</span></li></ul>
+        <details class="more"><summary>How it was done<span class="sr-only">: Lunim Innovation Studio</span></summary>
+        <dl class="work-lines">
+          <div><dt>What I built</dt><dd>The Lunim Innovation Studio homepage redesign and new features, with AI models supporting both design and code, plus AI-assisted marketing blogs and email templates.</dd></div>
+          <div><dt>How I evaluated it</dt><dd>Ran model evaluation research on the models available at the time, and reviewed and refined what they produced.</dd></div>
+          <div><dt>What guided it</dt><dd>User interviews for a digital storytelling platform, turned into personas, journey maps and job stories that set feature priorities.</dd></div>
+        </dl>
+        <ul class="chips" aria-label="Key facts"><li>AI-assisted development</li><li>Model evaluation</li><li>User research</li></ul>
+        </details>
+        </div>
+        <figure class="stack-media browser"><span class="bar" aria-hidden="true"><i></i><i></i><i></i><em>lunim studio</em></span><video src="img/lunim.mp4" poster="img/lunim.jpg" width="800" height="506" muted loop playsinline preload="none" role="img" aria-label="The Lunim Studio homepage: From Idea to Audience, over a night sky and a moving dark sea."></video></figure>
+      </article>
+      </li>
+      <li class="stack-card card--morphmind">
+      <article class="stack-inner" aria-labelledby="morphmind-title">
+        <div class="stack-copy">
+        <p class="work-tag">2024 · MSc dissertation</p>
+        <h3 class="stack-title" id="morphmind-title">MorphMind</h3>
+        <p class="stack-sub">Can we predict how a soft interface will move, before it moves? The MorpheesPlug toolkit, rebuilt around motion capture and machine learning.</p>
+        <ul class="facts" aria-label="Key facts"><li><b>500 Hz</b><span>motion capture</span></li><li><b>5,000</b><span>frames per recording</span></li><li><b>3</b><span>soft widget types</span></li></ul>
+        <details class="more"><summary>How it was done<span class="sr-only">: MorphMind</span></summary>
+        <dl class="work-lines">
+          <div><dt>Problem</dt><dd>Soft materials morph in nonlinear, often inconsistent ways, and there was no easy way to track or predict those changes.</dd></div>
+          <div><dt>What I built</dt><dd>More repeatable soft widgets, a calibrated multi-angle motion-capture setup, and machine-learning models that predict each widget's deformation from inflation time and pressure.</dd></div>
+          <div><dt>Result</dt><dd>Recordings of 5,000 frames at 500 Hz. The fold changed length by about 1–2 mm and the spiral's closure by up to 140 mm, both regular enough to model. The teeth widget moved erratically, and hidden markers limited its predictions.</dd></div>
+        </dl>
+        <ul class="chips" aria-label="Built with"><li>Motion capture</li><li>Machine learning</li><li>3D-printed soft widgets</li><li>Spiral · fold · teeth</li></ul>
+        </details>
+        </div>
+        <figure class="stack-media"><video src="img/morphmind.mp4" poster="img/morphmind.jpg" width="1152" height="648" muted loop playsinline preload="none" role="img" aria-label="Three clips: a soft widget tracked as it inflates, with live plots of its area, perimeter and curvature; its markers in 3D motion-capture software; and the recorded position data."></video></figure>
+      </article>
+      </li>
+      <li class="stack-card card--judges">
+      <article class="stack-inner" aria-labelledby="judges-title">
+        <div class="stack-copy">
+        <p class="work-tag">2023–24 · LLM evaluation · University of Birmingham</p>
+        <h3 class="stack-title" id="judges-title">Judging the judges</h3>
+        <p class="stack-sub">How closely do a model's judgements of chatbot answers match a person's?</p>
+        <ul class="facts" aria-label="Key facts"><li><b>80</b><span>single answers scored</span></li><li><b>40</b><span>pairs compared</span></li><li><b>2</b><span>models against one annotator</span></li></ul>
+        <details class="more"><summary>How it was done<span class="sr-only">: Judging the judges</span></summary>
+        <dl class="work-lines">
+          <div><dt>What I did</dt><dd>Compared single, pairwise and multiple-output designs for evaluating chatbot responses.</dd></div>
+          <div><dt>How I measured it</dt><dd>Agreement between human and model evaluations, using Pearson correlations in Python.</dd></div>
+          <div><dt>Result</dt><dd>Agreement was weak: mean r = 0.32 when scoring single answers (80 responses) and r = 0.21 when comparing pairs (40), between one annotator and two models.</dd></div>
+          <div><dt>Why it matters</dt><dd>An automated judge is only worth using if it agrees with the people it stands in for.</dd></div>
+        </dl>
+        <ul class="chips" aria-label="Built with"><li>Python</li><li>LLM-as-a-judge</li><li>Human evaluation</li><li>Pearson correlation</li></ul>
+        </details>
+        </div>
+        <figure class="stack-media score" role="img" aria-label="Agreement with a person: r = 0.32 for single answers and r = 0.21 for pairs, on a scale where 1 is perfect."><p><b>0.32</b><span>single answers</span><i style="--v:.32"></i></p><p><b>0.21</b><span>pairs</span><i style="--v:.21"></i></p><small>r, where a full bar is perfect agreement</small></figure>
+      </article>
+      </li>
+      <li class="stack-card card--eyes">
+      <article class="stack-inner" aria-labelledby="eyes-title">
+        <div class="stack-copy">
+        <p class="work-tag">2023–24 · Experiment design · University of Birmingham</p>
+        <h3 class="stack-title" id="eyes-title">Where do eyes go when people cooperate?</h3>
+        <p class="stack-sub">An eye-tracking study of the Stag Hunt game.</p>
+        <ul class="facts" aria-label="Key facts"><li><b>31</b><span>people took part</span></li><li><b>30</b><span>people analysed</span></li><li><b>&lt; 0.08</b><span>|r|, gaze and choice, 26 people</span></li></ul>
+        <details class="more"><summary>How it was done<span class="sr-only">: Where do eyes go when people cooperate?</span></summary>
+        <dl class="work-lines">
+          <div><dt>The study</dt><dd>A Stag Hunt eye-tracking study with 31 students on a Tobii Pro Spark.</dd></div>
+          <div><dt>What I did</dt><dd>Briefing, consent, calibration and hypotheses, then fixation analysis in R. 31 people took part and one was excluded for a technical fault.</dd></div>
+          <div><dt>Result</dt><dd>For 26 of the 30 people analysed, time spent looking at each object was almost unrelated to how often their choice agreed with the other player's goal (|r| below 0.08).</dd></div>
+        </dl>
+        <ul class="chips" aria-label="Built with"><li>Tobii Pro Spark</li><li>31 participants</li><li>R</li><li>Fixation analysis</li></ul>
+        </details>
+        </div>
+        <figure class="stack-media"><img src="img/staghunt.png" class="is-pixel" width="273" height="292" alt="The Stag Hunt game seen from above, with two hunters, a stag, bushes and a red circle, overlaid with blue gaze points gathered around the hunters, the bushes and the stag." loading="lazy"></figure>
+      </article>
+      </li>
+      <li class="stack-card card--energy">
+      <article class="stack-inner" aria-labelledby="energy-title">
+        <div class="stack-copy">
+        <p class="work-tag">2023 · UX research &amp; design · smart home</p>
+        <h3 class="stack-title" id="energy-title">Small signals, everyday change</h3>
+        <p class="stack-sub">A simple app paired with physical reminders, so household energy use is visible at the moment it matters.</p>
+        <ul class="facts" aria-label="Key facts"><li><b>2023</b><span>smart-home study</span></li><li><b>2</b><span>parts: app and reminders</span></li></ul>
+        <details class="more"><summary>How it was done<span class="sr-only">: Small signals, everyday change</span></summary>
+        <dl class="work-lines">
+          <div><dt>Approach</dt><dd>We shifted the focus from information to action.</dd></div>
+          <div><dt>What we found</dt><dd>Test participants found the physical reminders surprisingly effective, especially in shared households. They said it felt personal, not preachy.</dd></div>
+          <div><dt>Takeaway</dt><dd>Meaningful change doesn't always need complex tech. A simple display or a well-timed alert can lead to better choices.</dd></div>
+        </dl>
+        </details></div>
+        <figure class="stack-media" data-iso="bulb" data-iso-mode="corner"><img src="img/energy-app.png" width="424" height="346" alt="A white smart plug in front of a phone showing an energy app: a greeting, a prompt to update appliance schedules before a trip, and a comparison of daily energy use between two months." loading="lazy"></figure>
+      </article>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================================================ NEXT -->
+  <section class="field field--tech next" id="next" aria-labelledby="next-title" data-section="next">
+    <button class="hunt-pixel hunt-pixel--next" type="button" data-hunt="3" aria-label="A glowing pixel, hidden in this section" hidden></button>
+    <div class="section-head">
+      <p class="label kicker">Career interests</p>
+      <h2 class="display-l" id="next-title"><span data-perch="next">what's next</span></h2>
+    </div>
+    <div class="next-grid">
+      <div>
+        <p class="hud-title planned-title" aria-hidden="true">In the pipeline</p>
+        <ul class="planned">
+          <li><span class="status">In progress</span><b>ResearchPilot</b> An agent in Python and LangGraph that searches the literature and writes source-linked summaries with human review, tested against a single-model baseline on citation accuracy and unsupported claims.</li>
+          <li><span class="status">In progress</span><b>AgentBenchLab</b> A reproducible framework for evaluating agents, with fixed tasks, recorded traces and repeatable scoring of success, tool errors, citation reliability, latency and cost.</li>
+        </ul>
+      </div>
+      <div class="network glass" id="network">
+        <div class="net-head">
+          <h3>Skills, mapped to projects</h3>
+          <p class="net-count" aria-hidden="true"></p>
+        </div>
+        <div class="net-stage" role="group" aria-label="Skills and the projects that use them"><canvas aria-hidden="true"></canvas></div>
+        <p class="net-info" aria-live="polite">Select a node to trace its path</p>
+        <div class="net-list">
+          <div class="net-group"><h4>AI evaluation</h4><ul class="tool-list"><li>LLM evaluation</li><li>Human–model agreement</li><li>Agent evaluation</li><li>Experimental design</li><li>Statistical analysis</li></ul></div>
+          <div class="net-group"><h4>ML &amp; agents</h4><ul class="tool-list"><li>Machine learning</li><li>LangGraph agents</li><li>AI-assisted development</li></ul></div>
+          <div class="net-group"><h4>Multimodal data</h4><ul class="tool-list"><li>Computer vision (OpenCV)</li><li>Hand tracking (MediaPipe)</li><li>Motion capture</li><li>Eye tracking</li><li>Signal processing</li></ul></div>
+          <div class="net-group"><h4>Systems &amp; hardware</h4><ul class="tool-list"><li>Python</li><li>R</li><li>Real-time systems</li><li>Microcontrollers</li><li>Sensor fabrication</li><li>Interface design</li></ul></div>
+        </div>
+        <p class="net-also"><b>Also used in study and work</b> SQL, C++, Java, NumPy, pandas, Matplotlib, Jupyter, Salesforce Lightning Web Components</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ CONTACT -->
+  <section class="field field--lilac contact" id="contact" aria-labelledby="contact-title" data-section="contact">
+    <button class="hunt-pixel hunt-pixel--contact" type="button" data-hunt="4" aria-label="A glowing pixel, hidden in this section" hidden></button>
+    <div class="save">
+      <div class="save-card glass">
+      <p class="hud-title" aria-hidden="true">Contact</p>
+      <div class="save-object" data-iso="heart" aria-hidden="true"></div>
+      <h2 class="display-l" id="contact-title"><span data-perch="contact">let's talk</span></h2>
+      <p class="lead">If you're hiring for AI/ML, or want to talk models, sensors or evaluation, I'd love to hear from you.</p>
+      <div class="save-grid">
+        <div class="save-log">
+          <h3 class="label">Experience</h3>
+          <ol class="timeline">
+            <li><span class="when">2026–now</span><b>Research Associate</b><span>University of Birmingham</span></li>
+            <li><span class="when">2025</span><b>AI Platform Engineer</b><span>Risidio, London</span></li>
+            <li><span class="when">2023–24</span><b>MSc Human Computer Interaction</b><span>University of Birmingham</span></li>
+            <li><span class="when">2021–23</span><b>Program Analyst</b><span>Cognizant, India</span></li>
+            <li><span class="when">2017–21</span><b>BE Computer Science and Engineering</b><span>Visvesvaraya Technological University</span></li>
+          </ol>
+        </div>
+        <div class="save-ach">
+          <h3 class="label">Highlights</h3>
+          <ul class="ach-list">
+            <li data-icon="book">1 manuscript in preparation, on wearable sensing with LIFT</li>
+            <li data-icon="gem">Ran a 31-participant eye-tracking study</li>
+            <li data-icon="compass">University award for MSc dissertation project</li>
+            <li data-icon="heart">Prototype demos and student lab classes</li>
+          </ul>
+        </div>
+      </div>
+      <p class="contact-mail"><span class="label">Email</span><a href="mailto:apoorva.koderinarasimha@gmail.com">apoorva.koderinarasimha@gmail.com</a></p>
+      <div class="actions contact-actions" id="contact-actions" data-email="apoorva.koderinarasimha@gmail.com" data-linkedin="https://www.linkedin.com/in/apoorva-koderi-narasimha" data-scholar=""></div>
+      <div class="actions">
+        <a class="block block--cream" href="#start">Back to the start</a>
+        <button class="block block--tangerine" type="button" id="replay-tour">Take the tour</button>
+      </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <p>© 2026 Apoorva. Built with three.js and curiosity.</p>
+      <div class="footer-tools" role="group" aria-label="Site settings">
+        <button class="chip" id="guide-toggle" type="button" aria-pressed="true">Guide</button>
+        <button class="chip" id="motion-toggle" type="button" aria-pressed="true">Motion</button>
+      </div>
+    </footer>
+  </section>
+</main>
+
+<div class="sr-only" id="host-live" aria-live="polite"></div>
+<button class="host-recall chip" id="host-recall" type="button" hidden>Call Apoorva back</button>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
