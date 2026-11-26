@@ -3,8 +3,6 @@ import { softLetters } from './fx.js';
 import { sound } from './sound.js';
 import { createPinNav } from './pinnav.js';
 import { setupObjects } from './iso.js';
-import { setupNetwork } from './network.js';
-import { setupHunt } from './hunt.js';
 import { setupCards, setupReveals } from './cards.js';
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -32,8 +30,8 @@ $('#motion-toggle').addEventListener('click', () => {
 });
 applyMotion();
 
-// ------------------------------------------------------------ sound (on unless turned off; silent until the first click, tap or key)
-let soundWanted = prefs.sound ?? true;
+// ------------------------------------------------------------ sound (on unless turned off)
+let soundWanted = prefs.sound ?? true; // on unless the visitor turns it off; silent until their first click, tap or key
 function applySound() { $('#sound-toggle').setAttribute('aria-pressed', String(soundWanted)); }
 $('#sound-toggle').addEventListener('click', () => { soundWanted = !soundWanted; sound.set(soundWanted); prefs.sound = soundWanted; savePrefs(); applySound(); sound.chime(); });
 // Browsers only let audio start from a gesture: unlock on the first click, key or touch.
@@ -134,31 +132,74 @@ softLetters(heroSquish, { radius: 170 });
 $$('main h2 > span').forEach((el) => softLetters(el, { radius: 110 }));
 
 // ------------------------------------------------------------ content features
-new Promise((r) => requestAnimationFrame(() => setTimeout(r, 0))).then(() => import('./particles.js')).then((p) => p.setupParticles({ sections, themeOf, isReduced })).catch(() => {}); // decoration: the page works without it
+import('./codebg.js').then((m) => m.setupCodeBg($('#start'), { isReduced })).catch(() => {}); // the hero's code background
+import('./bg.js').then((m) => m.setupBackground({ isReduced })).catch(() => {}); // the calm background below the hero (the particles are retired)
 setupCards($$('.stack-card'), { isReduced });
-setupHunt({ sound });
-setupNetwork($('#network'), { isReduced });
-setupReveals($$('.planned li, .network, .timeline li, .ach-list li'));
+// Project folders: each opens its full write-up in a dialog. Escape, the Close button or a click outside closes it.
+// Previous / next move between write-ups, and each one has its own link (#morphmind and so on).
+const dialogs = $$('.project-dialog');
+const keyOf = (d) => d.id.replace(/^dlg-/, '');
+function openProject(d) {
+  if (!d.open) d.showModal();
+  if (location.hash !== '#' + keyOf(d)) history.replaceState(null, '', '#' + keyOf(d));
+}
+$$('.folder').forEach((b) => b.addEventListener('click', () => openProject(document.getElementById(b.getAttribute('aria-controls')))));
+dialogs.forEach((d, i) => {
+  const prev = dialogs[(i - 1 + dialogs.length) % dialogs.length], next = dialogs[(i + 1) % dialogs.length];
+  const name = (x) => x.querySelector('.stack-title').textContent;
+  const nav = document.createElement('nav');
+  nav.className = 'dialog-nav';
+  nav.setAttribute('aria-label', 'Other projects');
+  nav.innerHTML = `<button class="chip" type="button" data-step="-1"><span aria-hidden="true">←</span> <span class="sr-only">Previous: </span>${name(prev)}</button>`
+    + `<span class="dialog-count" aria-hidden="true">${i + 1} / ${dialogs.length}</span>`
+    + `<button class="chip" type="button" data-step="1"><span class="sr-only">Next: </span>${name(next)} <span aria-hidden="true">→</span></button>`;
+  d.append(nav);
+  nav.addEventListener('click', (e) => {
+    const step = e.target.closest('[data-step]');
+    if (!step) return;
+    const to = step.dataset.step === '1' ? next : prev;
+    d.dataset.switching = '1'; d.close(); // the close event arrives later; it reads and clears this flag
+    openProject(to);
+    to.scrollTop = 0;
+  });
+  // back to the folders: the link loses the project and focus returns to its folder
+  const finish = () => {
+    history.replaceState(null, '', '#projects');
+    $(`[aria-controls="${d.id}"]`)?.focus({ preventScroll: true });
+  };
+  const shut = () => { d.dataset.switching = '1'; d.close(); finish(); };
+  d.querySelector('[data-close]').addEventListener('click', shut);
+  d.addEventListener('click', (e) => { if (e.target === d) shut(); });
+  d.addEventListener('close', () => { // Escape lands here; so, later, do the closes above, which have already finished
+    if (d.dataset.switching) { delete d.dataset.switching; return; }
+    finish();
+  });
+});
+// a link straight to one project: land on the folders and open it
+const linked = location.hash.length > 1 && document.getElementById('dlg-' + location.hash.slice(1));
+if (linked) { document.getElementById('projects').scrollIntoView({ behavior: 'instant' }); openProject(linked); }
+
+// phones have no hover, so each folder fans its pages open while it is well on screen
+if (matchMedia('(hover: none)').matches) {
+  const peek = new IntersectionObserver((entries) => entries.forEach((e) => e.target.classList.toggle('is-peek', e.isIntersecting)), { threshold: 0.75 });
+  $$('.folder').forEach((f) => peek.observe(f));
+}
+setupReveals($$('.planned li, .stack-col, .xp-item'));
 // In-page links that move like the nav: the hero's buttons.
 $$('a[data-jump]').forEach((a) => a.addEventListener('click', (e) => { if (!plainClick(e)) return; e.preventDefault(); jumpTo(a.hash.slice(1)); }));
 
-// contact links appear only when they are configured in index.html (data-* on #contact-actions)
-(function contactLinks() {
-  const box = $('#contact-actions');
-  const links = [
-    ['email', (v) => `mailto:${v}`, 'email me'], ['linkedin', (v) => v, 'linkedin'],
-    ['scholar', (v) => v, 'publications'], ['cv', (v) => v, 'download my cv'],
-  ];
-  for (const [key, href, label] of links) {
-    const v = (box.dataset[key] || '').trim();
-    if (!v) continue;
-    const a = document.createElement('a');
-    a.className = 'block ' + (key === 'email' ? 'block--tangerine' : 'block--cream');
-    a.href = href(v); a.textContent = label;
-    if (!href(v).startsWith('mailto:')) { a.target = '_blank'; a.rel = 'noopener'; }
-    box.appendChild(a);
-  }
-})();
+// contact: copy the address; the form only writes a draft in the visitor's own mail app
+$$('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'Copied'; } catch (e) { b.textContent = 'Copy failed'; }
+  setTimeout(() => { b.textContent = 'Copy'; }, 1800);
+}));
+$('#talk-form')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const f = e.currentTarget, v = (n) => f.elements[n].value.trim();
+  const subject = v('name') ? `Hello from ${v('name')}` : 'Hello from your website';
+  const body = [v('message'), '', v('name'), v('email')].filter((l, i) => l || i === 1).join('\n').trim();
+  location.href = `mailto:${f.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+});
 
 // ------------------------------------------------------------ the host
 const replayBtn = $('#replay-tour'); // the tour runs only when asked for, here or from her menu
@@ -185,7 +226,6 @@ async function bootHost({ force = false } = {}) {
   });
   setInterval(() => { if (bubble.open) bubble.place(); }, 160);
   $('#host-hit').addEventListener('click', () => director.poke());
-  addEventListener('hunt:done', () => stage.burst());
   addEventListener('host:lost', () => { setGuideUI(false); });
 
   let guideGen = 0; // each toggle supersedes the previous one, so quick off/on cannot strand her

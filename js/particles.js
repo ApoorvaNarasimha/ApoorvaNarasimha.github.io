@@ -107,7 +107,7 @@ export function setupParticles({ sections, themeOf, isReduced }) {
   let keys = [], aspect = 0, W = 0, H = 0;
   function measure() { // scroll positions at which each shape is fully formed
     const top = (el) => el.getBoundingClientRect().top + scrollY, v = innerHeight, id = (s) => document.getElementById(s);
-    const stack = document.querySelector('.stack');
+    const stack = document.querySelector('.folders');
     keys = [[0, 0], [v * 0.12, 0], [top(id('projects')) - v * 0.05, 1], [top(stack) + v * 0.15, 2], [top(id('next')) - v * 1.25, 2], [top(id('next')) - v * 0.05, 3], [top(id('contact')) - v * 1.15, 3], [top(id('contact')) - v * 0.05, 4]];
   }
   function resize() {
@@ -138,12 +138,13 @@ export function setupParticles({ sections, themeOf, isReduced }) {
     const c01 = (v) => Math.max(0, Math.min(1, v));
     const inNext = c01((H * 0.5 - top('next')) / (H * 0.4)), past = c01((H * 0.04 - top('next')) / (H * 0.3)), back = c01((H * 0.95 - top('contact')) / (H * 0.6));
     const next = (small ? 0.22 : 1 - 0.35 * inNext) * (1 - past) + 0.1 * past;
-    const inHead = small ? c01((H * 0.45 - top('projects')) / (H * 0.3)) * c01((document.querySelector('.stack').getBoundingClientRect().top) / (H * 0.2)) : 0;
-    const inProj = c01((H * 0.7 - top('projects')) / (H * 0.5)), inStack = c01((H * 0.45 - document.querySelector('.stack').getBoundingClientRect().top) / (H * 0.35));
+    const inHead = small ? c01((H * 0.45 - top('projects')) / (H * 0.3)) * c01((document.querySelector('.folders').getBoundingClientRect().top) / (H * 0.2)) : 0;
+    const inProj = c01((H * 0.7 - top('projects')) / (H * 0.5)), inStack = c01((H * 0.45 - document.querySelector('.folders').getBoundingClientRect().top) / (H * 0.35));
     beside = inProj * inStack > 0.5;
-    const proj = 1 - inProj * 0.74 * inStack * (1 - inNext); // full strength at the heading, a quarter beside the cards
+    const proj = 1 - inProj * 0.9 * inStack * (1 - inNext); // full strength at the heading, a quarter beside the cards
     const inAbout = c01((H * 0.9 - top('about')) / (H * 0.4)) * c01((top('projects') - H * 0.3) / (H * 0.25)); // the about text reads on clear ground
-    return (1 - 0.92 * inAbout) * proj * (1 - 0.6 * inHead) * (1 - inNext + next * inNext) * (1 - back) + (small ? 0.7 : 1) * back;
+    const pastHero = c01((H * 0.85 - top('about')) / (H * 0.45)); // the hero has its code background instead
+    return pastHero * (1 - 0.92 * inAbout) * proj * (1 - 0.6 * inHead) * (1 - inNext + next * inNext) * (1 - back) + (small ? 0.7 : 1) * back;
   }
   function frame(now) {
     raf = 0;

@@ -1,7 +1,7 @@
 // Section objects for the nav (isometric cubes, js/iso.js).
 import { isoURL } from './iso.js';
 
-export const SECTION_ITEM = { start: 'grass', projects: 'pickaxe', next: 'compass', contact: 'heart' };
+export const SECTION_ITEM = { start: 'grass', projects: 'pickaxe', next: 'compass', contact: 'heart', experience: 'book' };
 
 // A small icon, for the nav.
 export function itemIcon(name, size = 32) {
